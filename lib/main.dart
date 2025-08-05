@@ -38,12 +38,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
+  String _bmiResult = '';
 
   String calculateBMI() {
     int height = int.tryParse(_heightController.text) ?? 0;
     int weight = int.tryParse(_weightController.text) ?? 0;
 
-    double bmi = weight / (height / 100) * 2;
+    double bmi = weight / ((height / 100) * (height / 100));
 
     if (bmi < 18.5) {
       return "Underweight";
@@ -70,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
               setState(() {
                 _heightController.clear();
                 _weightController.clear();
+                _bmiResult = "";
               });
             },
             icon: Icon(Icons.delete),
@@ -89,11 +91,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   TextField(controller: _heightController),
                   TextField(controller: _weightController),
+                  Text(_bmiResult),
                 ],
               ),
             ),
             ElevatedButton(
-              onPressed: calculateBMI,
+              onPressed: () {
+                setState(() {
+                  _bmiResult = calculateBMI();
+                });
+              },
               child: const Text("Calculate BMI"),
             ),
           ],
