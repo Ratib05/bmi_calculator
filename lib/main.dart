@@ -45,15 +45,18 @@ class _MyHomePageState extends State<MyHomePage> {
     int weight = int.tryParse(_weightController.text) ?? 0;
 
     double bmi = weight / ((height / 100) * (height / 100));
+    String result;
 
     if (bmi < 18.5) {
-      return "Underweight";
+      result = "Underweight";
     } else if (bmi < 25) {
-      return "Healthy weight";
+      result = "Healthy weight";
     } else if (bmi < 30) {
-      return "overweight";
+      result = "overweight";
+    } else {
+      result = "Obese";
     }
-    return "Obese";
+    return "BMI = ${bmi.toStringAsFixed(1)} ($result)";
   }
 
   @override
@@ -89,8 +92,21 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextField(controller: _heightController),
-                  TextField(controller: _weightController),
+                  TextField(
+                    controller: _heightController,
+                    decoration: InputDecoration(
+                      labelText: "Enter height in cm",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _weightController,
+                    decoration: InputDecoration(
+                      labelText: "Enter weight in KG",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
                   Text(_bmiResult),
                 ],
               ),
